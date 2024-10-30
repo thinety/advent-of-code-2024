@@ -1,0 +1,23 @@
+cabal-version: 3.4
+
+name: aoc2024
+version: 0.1.0
+
+common deps
+    default-language: GHC2024
+    other-extensions:
+
+    ghc-options: -Wall
+
+    build-depends:
+        base,
+        bytestring,
+        mtl,
+        containers,
+
+    hs-source-dirs: src
+    other-modules: Base
+
+executable day01
+    import: deps
+    main-is: Day01.hs
