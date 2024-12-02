@@ -1,5 +1,15 @@
 import Control.Arrow
 
+infixr 3 <&&>
+
+(<&&>) :: (a -> Bool) -> (a -> Bool) -> (a -> Bool)
+(f <&&> g) x = f x && g x
+
+infixr 2 <||>
+
+(<||>) :: (a -> Bool) -> (a -> Bool) -> (a -> Bool)
+(f <||> g) x = f x || g x
+
 main :: IO ()
 main = interact $ parse >>> solve1 &&& solve2 >>> \(ans1, ans2) -> (show ans1) ++ "\n" ++ (show ans2) ++ "\n"
 
@@ -15,11 +25,11 @@ solve2 :: Input -> Int
 solve2 = filter (modifiedReports >>> any safe) >>> length
 
 safe :: [Int] -> Bool
-safe = differences >>> allBetween 1 3 &&& allBetween (-3) (-1) >>> uncurry (||)
+safe = differences >>> all (between 1 3) <||> all (between (-1) (-3))
   where
     differences = (drop 1) &&& id >>> uncurry (zipWith (-))
 
-    allBetween a b = all ((>= a) &&& (<= b) >>> uncurry (&&))
+    between a b = (>= a) <&&> (<= b)
 
 modifiedReports :: [Int] -> [[Int]]
 modifiedReports xs = go 0
